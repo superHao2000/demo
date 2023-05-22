@@ -10,10 +10,7 @@ import com.example.demo.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -93,6 +90,7 @@ public class UserController {
      * @param newPassword
      * @return {@link CommonResult}<{@link Object}>
      */
+    @PostMapping("/updatePassword")
     public CommonResult<Object> updatePassword(User user, String newPassword) {
         user.setPassword(newPassword);
         user.setCreateTime(LocalDateTime.now());
@@ -106,6 +104,7 @@ public class UserController {
      * @param user
      * @return {@link CommonResult}<{@link Boolean}>
      */
+    @PostMapping("/saveUser")
     public CommonResult<Integer> saveUser(User user) {
         int type = user.getType();
         user.setPassword("123456");

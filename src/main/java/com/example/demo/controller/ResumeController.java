@@ -7,8 +7,10 @@ import com.example.demo.common.CommonResult;
 import com.example.demo.pojo.Company;
 import com.example.demo.pojo.Resume;
 import com.example.demo.pojo.Student;
+import com.example.demo.pojo.User;
 import com.example.demo.service.ResumeService;
 import com.example.demo.service.ResumeService;
+import com.example.demo.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +28,8 @@ import java.util.List;
 public class ResumeController {
     @Autowired
     ResumeService resumeService;
+    @Autowired
+    StudentService studentService;
 
     /**
      * 查看所有简历信息
@@ -45,16 +49,18 @@ public class ResumeController {
     /**
      * 根据学生id查询简历信息
      *
-     * @param student
+     * @param user
      * @param pageNum
      * @param pageSize
      * @return {@link CommonResult}<{@link Page}<{@link Resume}>>
      */
     @GetMapping("/getForId")
-    public CommonResult<Page<Resume>> getForId(Student student,
+    public CommonResult<Page<Resume>> getForId(User user,
                                                @RequestParam("limit") int pageNum,
                                                @RequestParam("page") int pageSize) {
         Page<Resume> page = new Page<>(pageNum, pageSize);
+        Student student = studentService.getOne(
+                new LambdaQueryWrapper<Student>().eq(Student::getUserid, user.getUserId()));
         LambdaQueryWrapper<Resume> qw = new LambdaQueryWrapper<>();
         qw.eq(Resume::getResumeId, student.getSid());
         resumeService.page(page, qw);
@@ -68,7 +74,8 @@ public class ResumeController {
      * @return {@link CommonResult}<{@link Boolean}>
      */
     @PostMapping("save")
-    public CommonResult<Boolean> save(Resume resume) {
+    public CommonResult<Boolean> save(User user, Resume resume) {
+        resume.setSid(user.getUserId());
         resume.setCreateTime(LocalDateTime.now());
         boolean b = resumeService.save(resume);
         return CommonResult.generateSuccessResult(1, b);

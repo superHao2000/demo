@@ -29,6 +29,7 @@ public class CompanyController {
      * @param pageNum
      * @return {@link CommonResult}<{@link Page}<{@link Company}>>
      */
+    @GetMapping("getAllCompany")
     public CommonResult<Page<Company>> getAllCompany(@RequestParam("limit") int pageSize,
                                                      @RequestParam("page") int pageNum) {
         Page<Company> page = new Page<>(pageNum, pageSize);

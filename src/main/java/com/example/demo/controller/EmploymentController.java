@@ -9,6 +9,7 @@ import com.example.demo.pojo.Employment;
 import com.example.demo.pojo.Student;
 import com.example.demo.pojo.User;
 import com.example.demo.service.EmploymentService;
+import com.example.demo.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,8 @@ import java.util.List;
 public class EmploymentController {
     @Autowired
     EmploymentService employmentService;
+    @Autowired
+    StudentService studentService;
 
     /**
      * 查看所有就业
@@ -50,33 +53,34 @@ public class EmploymentController {
     /**
      * 根据学生id查询就业信息
      *
-     * @param student
+     * @param user
      * @param pageNum
      * @param pageSize
      * @return {@link CommonResult}<{@link Page}<{@link Employment}>>
      */
     @GetMapping("/getForId")
-    public CommonResult<Page<Employment>> getForId(Student student,
-                                               @RequestParam("limit") int pageNum,
-                                               @RequestParam("page") int pageSize) {
+    public CommonResult<Page<Employment>> getForId(User user,
+                                                   @RequestParam("limit") int pageNum,
+                                                   @RequestParam("page") int pageSize) {
         Page<Employment> page = new Page<>(pageNum, pageSize);
-        LambdaQueryWrapper<Employment> qw = new LambdaQueryWrapper<>();
-        qw.eq(Employment::getSid, student.getSid());
-        employmentService.page(page, qw);
+        Student student = studentService.getOne(
+                new LambdaQueryWrapper<Student>().eq(Student::getUserid, user.getUserId()));
+        employmentService.page(page,
+                               new LambdaQueryWrapper<Employment>().eq(Employment::getSid, student.getSid()));
         return CommonResult.generateSuccessResult(1, page);
     }
 
     /**
      * 根据学生id增加一条就业信息
      *
-     * @param user
+     * @param student
      * @param employment
      * @return {@link CommonResult}<{@link Boolean}>
      */
     @PostMapping("getForUserid")
-    public CommonResult<Boolean> addEmployment(User user, Employment employment) {
+    public CommonResult<Boolean> addEmployment(Student student, Employment employment) {
         employment.setInsertTime(LocalDateTime.now());
-        employment.setSid(user.getUserId());
+        employment.setSid(student.getSid());
         boolean b = employmentService.save(employment);
         return CommonResult.generateSuccessResult(1, b);
     }
