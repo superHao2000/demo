@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.CommonResult;
+<<<<<<< HEAD
 import com.example.demo.pojo.Student;
 import com.example.demo.pojo.User;
 import com.example.demo.service.AdminService;
@@ -11,6 +12,16 @@ import com.example.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+=======
+import com.example.demo.pojo.*;
+import com.example.demo.service.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+>>>>>>> d1636e3f0ae4a0f7986055b6db2e016e45984b3b
 
 /**
  * 用户控制器
@@ -27,6 +38,12 @@ public class UserController {
     UserService userService;
     @Autowired
     AdminService adminService;
+    @Autowired
+    StudentService studentService;
+    @Autowired
+    TeacherService teacherService;
+    @Autowired
+    CompanyService companyService;
 
     @PostMapping("login")
     public CommonResult<Object> login(@RequestBody User user) {
@@ -41,29 +58,90 @@ public class UserController {
         if (!emp.getPassword().equals(user.getPassword())) {
             return CommonResult.generateFailureResult("密码错误", 1, null);
         }
-        // 登录者详细数据
-        // switch (emp.getType()) {
-        //     case 0:
-        //         LambdaQueryWrapper<Admin> queryWrapper1 = new LambdaQueryWrapper<>();
-        //         queryWrapper1.eq(Admin::getUserId, emp.getUserId());
-        //         Admin admin = adminService.getOne(queryWrapper1);
-        //         return CommonResult.generateSuccessResult(1, admin);
-        //     case 1:
-        //         break;
-        //     case 2:
-        //         break;
-        //     case 3:
-        //         break;
-        // }
+        /*        登录者详细数据
+                switch (emp.getType()) {
+                    case 0:
+                        LambdaQueryWrapper<Admin> queryWrapper1 = new LambdaQueryWrapper<>();
+                        queryWrapper1.eq(Admin::getUserId, emp.getUserId());
+                        Admin admin = adminService.getOne(queryWrapper1);
+                        return CommonResult.generateSuccessResult(1, admin);
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }*/
+        emp.setLastLoginTime(LocalDateTime.now());
+        userService.updateById(emp);
         return CommonResult.generateSuccessResult(1, emp);
     }
 
+    /**
+     * 获取所有用户
+     *
+     * @param pageSize
+     * @param pageNum
+     * @return {@link CommonResult}<{@link IPage}<{@link User}>>
+     */
     @GetMapping("/getAllUser")
-    public CommonResult<IPage<User>> getAllStudent(Student student, @RequestParam("limit") int pageSize,
-                                                   @RequestParam("page") int pageNum) {
+    public CommonResult<IPage<User>> getAllUser(@RequestParam("limit") int pageSize,
+                                                @RequestParam("page") int pageNum) {
         Page<User> page = new Page<>(pageNum, pageSize);
-        LambdaQueryWrapper<Student> qw = new LambdaQueryWrapper<>();
-        Page<User> page1 = userService.page(page);
-        return CommonResult.generateSuccessResult(page1.getSize(), page1);
+        LambdaQueryWrapper<User> qw = new LambdaQueryWrapper<>();
+        userService.page(page, null);
+        return CommonResult.generateSuccessResult(page.getPages(), page);
+    }
+
+    /**
+     * 修改用户密码
+     *
+     * @param user
+     * @param newPassword
+     * @return {@link CommonResult}<{@link Object}>
+     */
+    @PostMapping("/updatePassword")
+    public CommonResult<Object> updatePassword(User user, String newPassword) {
+        user.setPassword(newPassword);
+        user.setCreateTime(LocalDateTime.now());
+        userService.updateById(user);
+        return CommonResult.generateSuccessResult(1, null);
+    }
+
+    /**
+     * 添加用户
+     *
+     * @param user
+     * @return {@link CommonResult}<{@link Boolean}>
+     */
+    @PostMapping("/saveUser")
+    public CommonResult<Integer> saveUser(User user) {
+        int type = user.getType();
+        user.setPassword("123456");
+        user.setCreateTime(LocalDateTime.now());
+        userService.save(user);
+        switch (type) {
+            case 0:
+                Admin admin = new Admin();
+                admin.setUserId(user.getUserId());
+                adminService.save(admin);
+                break;
+            case 1:
+                Student student = new Student();
+                student.setUserid(user.getUserId());
+                studentService.save(student);
+                break;
+            case 2:
+                Teacher teacher = new Teacher();
+                teacher.setUserid(user.getUserId());
+                teacherService.save(teacher);
+                break;
+            case 3:
+                Company company = new Company();
+                company.setUserid(user.getUserId());
+                companyService.save(company);
+                break;
+        }
+        return CommonResult.generateSuccessResult(1, null);
     }
 }

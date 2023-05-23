@@ -53,7 +53,6 @@ public class Recruitment {
      * 发布时间
      */
     private LocalDateTime releaseTime;
-
     /**
      * 投递人数
      */
