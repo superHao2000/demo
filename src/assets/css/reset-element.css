@@ -1,0 +1,31 @@
+.el-menu--horizontal > .el-submenu .el-submenu__title {
+    height: 58px !important;
+}
+
+.el-menu.el-menu--horizontal {
+    border: none;
+}
+
+.el-col-12 {
+    width: 53% !important;
+}
+
+.el-menu--horizontal > .el-submenu.is-active .el-submenu__title {
+    border-bottom: none !important;
+}
+
+.el-icon-view {
+    margin-left: 2px;
+}
+a {
+    color: inherit;
+    display: inline-block !important;
+}
+a:active {
+    text-decoration: none;
+    color: #ffd04b !important;
+}
+
+.el-carousel__container{
+    height: 400px !important;
+}
