@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.CommonResult;
-<<<<<<< HEAD
 import com.example.demo.pojo.Student;
 import com.example.demo.pojo.User;
 import com.example.demo.service.AdminService;
@@ -12,16 +11,11 @@ import com.example.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-=======
 import com.example.demo.pojo.*;
 import com.example.demo.service.*;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+
 
 import java.time.LocalDateTime;
->>>>>>> d1636e3f0ae4a0f7986055b6db2e016e45984b3b
 
 /**
  * 用户控制器
