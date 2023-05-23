@@ -7,10 +7,7 @@ import com.example.demo.pojo.Admin;
 import com.example.demo.pojo.User;
 import com.example.demo.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 管理员控制器
@@ -18,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author super
  * @date 2023/05/22
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -32,8 +30,8 @@ public class AdminController {
     @GetMapping("/getAllAdmin")
     public CommonResult<Object> getAllAdmin() {
         Page<Admin> page=new Page<>();
-        adminService.list();
-        return CommonResult.generateSuccessResult(1, null);
+        adminService.page(page,null);
+        return CommonResult.generateSuccessResult(1, page);
     }
 
     @PostMapping("getOne")

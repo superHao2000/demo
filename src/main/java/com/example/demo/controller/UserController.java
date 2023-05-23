@@ -1,24 +1,16 @@
 package com.example.demo.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.CommonResult;
-import com.example.demo.pojo.Admin;
 import com.example.demo.pojo.Student;
 import com.example.demo.pojo.User;
 import com.example.demo.service.AdminService;
 import com.example.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.nio.channels.Pipe;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 用户控制器
@@ -26,6 +18,7 @@ import java.nio.channels.Pipe;
  * @author super
  * @date 2023/05/21
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/employment")
 @Slf4j
@@ -35,8 +28,8 @@ public class UserController {
     @Autowired
     AdminService adminService;
 
-    @RequestMapping("login")
-    public CommonResult<Object> login(User user) {
+    @PostMapping("login")
+    public CommonResult<Object> login(@RequestBody User user) {
         log.info("用户{}试图登录", user.getUserName());
         // 查询用户是否存在
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
