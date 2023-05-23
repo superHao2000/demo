@@ -1,309 +1,246 @@
--- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
---
--- Host: 127.0.0.1    Database: thesis
--- ------------------------------------------------------
--- Server version	8.0.31
+/*
+ Navicat Premium Data Transfer
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+ Source Server         : wsd
+ Source Server Type    : MySQL
+ Source Server Version : 80031
+ Source Host           : localhost:3306
+ Source Schema         : thesis
 
---
--- Table structure for table `admin`
---
+ Target Server Type    : MySQL
+ Target Server Version : 80031
+ File Encoding         : 65001
 
+ Date: 23/05/2023 22:39:41
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for admin
+-- ----------------------------
 DROP TABLE IF EXISTS `admin`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `admin` (
+CREATE TABLE `admin`  (
   `aid` int NOT NULL AUTO_INCREMENT,
-  `user_id` int DEFAULT NULL,
-  `a_name` varchar(64) DEFAULT NULL,
-  `tel` varchar(64) DEFAULT NULL,
-  `email` varchar(64) DEFAULT NULL,
-  PRIMARY KEY (`aid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `user_id` int NULL DEFAULT NULL,
+  `a_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `tel` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`aid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
---
--- Dumping data for table `admin`
---
+-- ----------------------------
+-- Records of admin
+-- ----------------------------
+INSERT INTO `admin` VALUES (1, 2, '张三', '17864098171', 'zhangsan@qq.com');
+INSERT INTO `admin` VALUES (2, 3, '李四', '17864098171', 'lisi@qq.com');
+INSERT INTO `admin` VALUES (3, 1, '王五', '17864098171', 'wangwu@qq.com');
+INSERT INTO `admin` VALUES (4, 4, '赵六', '17864098171', 'zhaoliuliu@qq.com');
+INSERT INTO `admin` VALUES (5, 5, '陈七', '17864098171', 'chenqi@qq.com');
+INSERT INTO `admin` VALUES (6, 6, '刘八', '17864098171', 'liuba@qq.com');
+INSERT INTO `admin` VALUES (7, 7, '孙九', '17864098171', 'sunjiu@qq.com');
+INSERT INTO `admin` VALUES (8, 8, '周十', '17864098171', 'zhoushi@qq.com');
+INSERT INTO `admin` VALUES (9, 9, '吴十一', '17864098171', 'wushiyi@qq.com');
+INSERT INTO `admin` VALUES (10, 10, '郑十二', '17864098171', 'zhengshier@qq.com');
+INSERT INTO `admin` VALUES (11, 11, '张三', '17864098171', 'zhangsan@qq.com');
+INSERT INTO `admin` VALUES (12, 12, '李四', '17864098171', 'lisi@qq.com');
+INSERT INTO `admin` VALUES (13, 13, '王五', '17864098171', 'wangwu@qq.com');
+INSERT INTO `admin` VALUES (14, 14, '赵六', '17864098171', 'zhaoliu@qq.com');
+INSERT INTO `admin` VALUES (15, 15, '陈七', '17864098171', 'chenqi@qq.com');
+INSERT INTO `admin` VALUES (16, 16, '刘八', '17864098171', 'liuba@qq.com');
+INSERT INTO `admin` VALUES (17, 17, '孙九', '17864098171', 'sunjiu@qq.com');
+INSERT INTO `admin` VALUES (18, 18, '周十', '17864098171', 'zhoushi@qq.com');
+INSERT INTO `admin` VALUES (19, 19, '吴十一', '17864098171', 'wushiyi@qq.com');
+INSERT INTO `admin` VALUES (20, 20, '郑十二', '17864098171', 'zhengshier@qq.com');
 
-LOCK TABLES `admin` WRITE;
-/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES (1,1,'小张','123414','231313@qq.com'),(2,6,NULL,NULL,NULL);
-/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `company`
---
-
+-- ----------------------------
+-- Table structure for company
+-- ----------------------------
 DROP TABLE IF EXISTS `company`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `company` (
+CREATE TABLE `company`  (
   `aid` int NOT NULL AUTO_INCREMENT,
-  `userid` int DEFAULT NULL,
-  `e_name` varchar(64) DEFAULT NULL,
-  `nature` varchar(64) DEFAULT NULL,
-  `address` varchar(64) DEFAULT NULL,
-  `tel` varchar(64) DEFAULT NULL,
-  `zipcode` varchar(64) DEFAULT NULL,
-  `email` varchar(64) DEFAULT NULL,
-  `website` varchar(64) DEFAULT NULL,
-  `profile` varchar(64) DEFAULT NULL,
-  `audit_status` varchar(64) DEFAULT NULL,
-  `create-time` datetime DEFAULT NULL,
-  PRIMARY KEY (`aid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `userid` int NULL DEFAULT NULL,
+  `e_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `nature` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `address` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `tel` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `zipcode` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `website` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `profile` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `audit_status` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `create-time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`aid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
---
--- Dumping data for table `company`
---
+-- ----------------------------
+-- Records of company
+-- ----------------------------
+INSERT INTO `company` VALUES (1, 3, '百度', '私企', '深圳市', '12341414', '345654', '12341414@163.com', 'www.baidu.com', '诚意待人', '0', '2023-05-22 18:31:34');
 
-LOCK TABLES `company` WRITE;
-/*!40000 ALTER TABLE `company` DISABLE KEYS */;
-INSERT INTO `company` VALUES (1,3,'百度','私企','深圳市','12341414','345654','12341414@163.com','www.baidu.com','诚意待人','0','2023-05-22 18:31:34');
-/*!40000 ALTER TABLE `company` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `delivery`
---
-
+-- ----------------------------
+-- Table structure for delivery
+-- ----------------------------
 DROP TABLE IF EXISTS `delivery`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `delivery` (
+CREATE TABLE `delivery`  (
   `tid` int NOT NULL AUTO_INCREMENT,
-  `sid` int DEFAULT NULL,
-  `recruitment-id` int DEFAULT NULL,
-  `resume-id` int DEFAULT NULL,
-  `delivery-time` datetime DEFAULT NULL,
-  `audit-status` varchar(64) DEFAULT NULL,
-  PRIMARY KEY (`tid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `sid` int NULL DEFAULT NULL,
+  `recruitment-id` int NULL DEFAULT NULL,
+  `resume-id` int NULL DEFAULT NULL,
+  `delivery-time` datetime NULL DEFAULT NULL,
+  `audit-status` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`tid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
---
--- Dumping data for table `delivery`
---
+-- ----------------------------
+-- Records of delivery
+-- ----------------------------
+INSERT INTO `delivery` VALUES (1, 1, 1, 1, '2023-05-23 14:36:55', '0');
 
-LOCK TABLES `delivery` WRITE;
-/*!40000 ALTER TABLE `delivery` DISABLE KEYS */;
-INSERT INTO `delivery` VALUES (1,1,1,1,'2023-05-23 14:36:55','0');
-/*!40000 ALTER TABLE `delivery` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `employment`
---
-
+-- ----------------------------
+-- Table structure for employment
+-- ----------------------------
 DROP TABLE IF EXISTS `employment`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `employment` (
+CREATE TABLE `employment`  (
   `jid` int NOT NULL AUTO_INCREMENT,
-  `sid` int DEFAULT NULL,
-  `cname` varchar(64) DEFAULT NULL,
-  `nature` varchar(64) DEFAULT NULL,
-  `department` varchar(64) DEFAULT NULL,
-  `position` varchar(64) DEFAULT NULL,
-  `work_age` varchar(64) DEFAULT NULL,
-  `salary` varchar(64) DEFAULT NULL,
-  `situation` varchar(64) DEFAULT NULL,
-  `insertTime` datetime DEFAULT NULL,
-  PRIMARY KEY (`jid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `sid` int NULL DEFAULT NULL,
+  `cname` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `nature` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `department` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `position` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `work_age` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `salary` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `situation` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `insertTime` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`jid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
---
--- Dumping data for table `employment`
---
+-- ----------------------------
+-- Records of employment
+-- ----------------------------
+INSERT INTO `employment` VALUES (1, 2, '阿里', '私企', '技术部', '实习助理', '1', '5000', '在岗', '2023-05-22 18:55:39');
 
-LOCK TABLES `employment` WRITE;
-/*!40000 ALTER TABLE `employment` DISABLE KEYS */;
-INSERT INTO `employment` VALUES (1,2,'阿里','私企','技术部','实习助理','1','5000','在岗','2023-05-22 18:55:39');
-/*!40000 ALTER TABLE `employment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `recruitment`
---
-
+-- ----------------------------
+-- Table structure for recruitment
+-- ----------------------------
 DROP TABLE IF EXISTS `recruitment`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `recruitment` (
+CREATE TABLE `recruitment`  (
   `recruitment-id` int NOT NULL AUTO_INCREMENT,
-  `eid` int DEFAULT NULL,
-  `position` varchar(64) DEFAULT NULL,
-  `num` int DEFAULT NULL,
-  `location` varchar(64) DEFAULT NULL,
-  `deucation` varchar(64) DEFAULT NULL,
-  `major` varchar(64) DEFAULT NULL,
-  `salary` varchar(64) DEFAULT NULL,
-  `releaseTime` datetime DEFAULT NULL,
-  `delivery-num` int DEFAULT NULL,
-  PRIMARY KEY (`recruitment-id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `eid` int NULL DEFAULT NULL,
+  `position` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `num` int NULL DEFAULT NULL,
+  `location` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `deucation` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `major` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `salary` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `releaseTime` datetime NULL DEFAULT NULL,
+  `delivery-num` int NULL DEFAULT NULL,
+  PRIMARY KEY (`recruitment-id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
---
--- Dumping data for table `recruitment`
---
+-- ----------------------------
+-- Records of recruitment
+-- ----------------------------
+INSERT INTO `recruitment` VALUES (1, 1, '销售', 10, '西安市', '专科', '无', '10000', '2023-05-22 18:50:41', 1);
 
-LOCK TABLES `recruitment` WRITE;
-/*!40000 ALTER TABLE `recruitment` DISABLE KEYS */;
-INSERT INTO `recruitment` VALUES (1,1,'销售',10,'西安市','专科','无','10000','2023-05-22 18:50:41',1);
-/*!40000 ALTER TABLE `recruitment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `resume`
---
-
+-- ----------------------------
+-- Table structure for resume
+-- ----------------------------
 DROP TABLE IF EXISTS `resume`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `resume` (
+CREATE TABLE `resume`  (
   `resume-id` int NOT NULL AUTO_INCREMENT,
-  `sid` int DEFAULT NULL,
-  `name` varchar(64) DEFAULT NULL,
-  `gender` varchar(64) DEFAULT NULL,
-  `birthdate` datetime DEFAULT NULL,
-  `tel` varchar(64) DEFAULT NULL,
-  `email` varchar(64) DEFAULT NULL,
-  `education` varchar(64) DEFAULT NULL,
-  `school` varchar(64) DEFAULT NULL,
-  `major` varchar(64) DEFAULT NULL,
-  `experience` varchar(64) DEFAULT NULL,
-  `skill` varchar(64) DEFAULT NULL,
-  `comment` varchar(64) DEFAULT NULL,
-  `create-time` datetime DEFAULT NULL,
-  PRIMARY KEY (`resume-id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `sid` int NULL DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `gender` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `birthdate` datetime NULL DEFAULT NULL,
+  `tel` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `education` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `school` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `major` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `experience` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `skill` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `comment` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `create-time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`resume-id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
---
--- Dumping data for table `resume`
---
+-- ----------------------------
+-- Records of resume
+-- ----------------------------
+INSERT INTO `resume` VALUES (1, 1, '张继科', '0', '2010-05-22 18:51:47', '12313131', '12313131@163.com', '本科', '渭南师范', '计算机应用技术', '无', '计算机', '善于与人交流', '2023-05-22 18:53:39');
 
-LOCK TABLES `resume` WRITE;
-/*!40000 ALTER TABLE `resume` DISABLE KEYS */;
-INSERT INTO `resume` VALUES (1,1,'张继科','0','2010-05-22 18:51:47','12313131','12313131@163.com','本科','渭南师范','计算机应用技术','无','计算机','善于与人交流','2023-05-22 18:53:39');
-/*!40000 ALTER TABLE `resume` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `student`
---
-
+-- ----------------------------
+-- Table structure for student
+-- ----------------------------
 DROP TABLE IF EXISTS `student`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `student` (
+CREATE TABLE `student`  (
   `sid` int NOT NULL AUTO_INCREMENT,
-  `userid` int DEFAULT NULL,
-  `tid` int DEFAULT NULL,
-  `sno` varchar(64) DEFAULT NULL,
-  `s_name` varchar(64) DEFAULT NULL,
-  `gender` varchar(64) DEFAULT NULL,
-  `birther` datetime DEFAULT NULL,
-  `department` varchar(64) DEFAULT NULL,
-  `major` varchar(64) DEFAULT NULL,
-  `grade` varchar(64) DEFAULT NULL,
-  `phone` varchar(64) DEFAULT NULL,
-  `address` varchar(64) DEFAULT NULL,
-  `create_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`sid`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `userid` int NULL DEFAULT NULL,
+  `tid` int NULL DEFAULT NULL,
+  `sno` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `s_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `gender` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `birther` datetime NULL DEFAULT NULL,
+  `department` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `major` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `grade` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `phone` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `address` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `create_time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`sid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
---
--- Dumping data for table `student`
---
+-- ----------------------------
+-- Records of student
+-- ----------------------------
+INSERT INTO `student` VALUES (1, 2, 1, '000123', '张继科', '0', '2001-05-22 14:50:34', '计算机学院', '数媒', '2019', '12341414144', '西安市', '2023-05-22 14:51:53');
+INSERT INTO `student` VALUES (2, 5, 1, '000124', '张1', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
-LOCK TABLES `student` WRITE;
-/*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (1,2,1,'000123','张继科','0','2001-05-22 14:50:34','计算机学院','数媒','2019','12341414144','西安市','2023-05-22 14:51:53'),(2,5,1,'000124','张1','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-/*!40000 ALTER TABLE `student` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `teacher`
---
-
+-- ----------------------------
+-- Table structure for teacher
+-- ----------------------------
 DROP TABLE IF EXISTS `teacher`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `teacher` (
+CREATE TABLE `teacher`  (
   `tid` int NOT NULL AUTO_INCREMENT,
-  `userid` int DEFAULT NULL,
-  `t-name` varchar(64) DEFAULT NULL,
-  `gender` varchar(64) DEFAULT NULL,
-  `department` varchar(64) DEFAULT NULL,
-  `title` varchar(64) DEFAULT NULL,
-  `tel` varchar(64) DEFAULT NULL,
-  `create-time` datetime DEFAULT NULL,
-  PRIMARY KEY (`tid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `userid` int NULL DEFAULT NULL,
+  `t-name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `gender` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `department` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `tel` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `create-time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`tid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
---
--- Dumping data for table `teacher`
---
+-- ----------------------------
+-- Records of teacher
+-- ----------------------------
+INSERT INTO `teacher` VALUES (1, 4, '白天', '0', '数媒专业', '副教授', '1234141', NULL);
 
-LOCK TABLES `teacher` WRITE;
-/*!40000 ALTER TABLE `teacher` DISABLE KEYS */;
-INSERT INTO `teacher` VALUES (1,4,'白天','0','数媒专业','副教授','1234141',NULL);
-/*!40000 ALTER TABLE `teacher` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `user`
---
-
+-- ----------------------------
+-- Table structure for user
+-- ----------------------------
 DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
+CREATE TABLE `user`  (
   `user_id` int NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(64) NOT NULL,
-  `password` varchar(64) DEFAULT NULL,
-  `type` int DEFAULT NULL,
-  `create_time` datetime DEFAULT NULL,
-  `last_login_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `user_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `password` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `type` int NULL DEFAULT NULL,
+  `create_time` datetime NULL DEFAULT NULL,
+  `last_login_time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
---
--- Dumping data for table `user`
---
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES (1, 'admin', '1234', 0, '2023-05-22 21:00:07', '2023-05-23 20:51:52');
+INSERT INTO `user` VALUES (2, 'student', '123456', 1, '2023-05-22 14:49:55', '2023-05-22 14:50:00');
+INSERT INTO `user` VALUES (3, 'qiye', '123456', 3, '2023-05-22 18:26:37', '2023-05-22 18:26:39');
+INSERT INTO `user` VALUES (4, 'teacher', '123456', 2, '2023-05-22 18:26:56', '2023-05-22 18:27:01');
+INSERT INTO `user` VALUES (5, 'student1', '123456', 1, '2023-05-22 19:24:36', '2023-05-22 19:24:38');
+INSERT INTO `user` VALUES (6, 'test', 'test', 0, NULL, '2023-05-23 15:08:22');
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','1234',0,'2023-05-22 21:00:07','2023-05-21 22:51:27'),(2,'student','123456',1,'2023-05-22 14:49:55','2023-05-22 14:50:00'),(3,'qiye','123456',3,'2023-05-22 18:26:37','2023-05-22 18:26:39'),(4,'teacher','123456',2,'2023-05-22 18:26:56','2023-05-22 18:27:01'),(5,'student1','123456',1,'2023-05-22 19:24:36','2023-05-22 19:24:38'),(6,'test','test',0,NULL,'2023-05-23 15:08:22');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2023-05-23 15:27:26
+SET FOREIGN_KEY_CHECKS = 1;
