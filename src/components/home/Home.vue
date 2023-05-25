@@ -1,104 +1,170 @@
 <template>
-    <el-container class="home">
-        <el-header>
-            <div class="header-left">
-                <h1>大学生就业管理</h1>
+  <el-container class="home">
+    <el-header>
+      <div class="header-left">
+        <h1>大学生就业管理</h1>
+      </div>
+      <div class="header-right">
+        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+          <el-submenu index="2">
+            <template slot="title">{{ loginUser.userName }}</template>
+            <el-menu-item index="2-1">个人中心</el-menu-item>
+            <el-menu-item index="2-1" @click="updatePassword">密码修改</el-menu-item>
+            <el-menu-item index="2-2" @click="logout">退出</el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </div>
+    </el-header>
+    <el-container class="aside">
+      <el-aside width="247px">
+        <el-menu
+            default-active="2"
+            class="el-menu-vertical-demo"
+            @open="handleOpen"
+            @close="handleClose"
+            text-color="#000"
+            active-text-color="#ffd04b">
+          <el-menu-item index="2" v-if="(loginUser.type!=3)">
+            <i class="el-icon-menu"></i>
+            <span slot="title">
+              <router-link to="/home/employment">就业信息管理</router-link></span>
+          </el-menu-item>
+
+          <el-menu-item index="3" v-if="loginUser.type==0">
+            <i class="el-icon-document"></i>
+            <span slot="title"><router-link to="/home/user">用户管理</router-link></span>
+          </el-menu-item>
+
+          <el-submenu index="1" v-if="loginUser.type==0">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span><router-link to="">用户信息管理</router-link>
+              </span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="1-1">
+                <router-link to="/home/admin">管理员管理</router-link>
+              </el-menu-item>
+              <el-menu-item index="1-2">
+                <router-link to="/home/student">学生管理</router-link>
+              </el-menu-item>
+              <el-menu-item index="1-3">
+                <router-link to="/home/teacher">教师管理</router-link>
+              </el-menu-item>
+              <el-menu-item index="1-4">
+                <router-link to="/home/firm">企业管理</router-link>
+              </el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+
+          <el-menu-item index="4" v-if="(loginUser.type!=3)">
+            <i class="el-icon-setting"></i>
+            <span slot="title"><router-link to="/home/resume">简历管理</router-link></span>
+
+          </el-menu-item>
+
+          <el-menu-item index="5">
+            <i class="el-icon-setting"></i>
+            <span slot="title"><router-link to="/home/recruitment">招聘信息管理</router-link></span>
+          </el-menu-item>
+
+
+        </el-menu>
+      </el-aside>
+      <el-main>
+        <div>
+          <el-dialog :visible.sync="dialogFormVisible" v-bind="$attrs" v-on="$listeners" @open="onOpen" @close="onClose"
+                     title="修改密码">
+            <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="100px">
+              <el-form-item label="旧密码" prop="oldPassword">
+                <el-input v-model="formData.oldPassword" placeholder="入输请旧密码" clearable :style="{width: '100%'}">
+                </el-input>
+              </el-form-item>
+              <el-form-item label="新密码" prop="newPassword">
+                <el-input v-model="formData.newPassword" placeholder="请输入新密码" clearable :style="{width: '100%'}">
+                </el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer">
+              <el-button @click="close">取消</el-button>
+              <el-button type="primary" @click="handelConfirm">确定</el-button>
             </div>
-            <div class="header-right">
-                <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-                    <el-submenu index="2">
-                        <template slot="title">名字</template>
-                        <el-menu-item index="2-1">个人中心</el-menu-item>
-                        <el-menu-item index="2-1">密码修改</el-menu-item>
-                        <el-menu-item index="2-2">退出</el-menu-item>
-                    </el-submenu>
-                </el-menu>
-            </div>
-        </el-header>
-        <el-container class="aside">
-            <el-aside width="247px">
-                <el-menu
-                        default-active="2"
-                        class="el-menu-vertical-demo"
-                        @open="handleOpen"
-                        @close="handleClose"
-                        text-color="#000"
-                        active-text-color="#ffd04b">
-
-                    <el-submenu index="1">
-                        <template slot="title">
-                            <i class="el-icon-location"></i>
-                            <span>
-                                <router-link to="">用户信息管理</router-link>
-                            </span>
-                        </template>
-                        <el-menu-item-group>
-                            <el-menu-item index="1-1">
-                                <router-link to="/home/admin">管理员管理</router-link>
-                            </el-menu-item>
-                            <el-menu-item index="1-2">
-                                <router-link to="/home/student">学生管理</router-link>
-                            </el-menu-item>
-                            <el-menu-item index="1-3">
-                                <router-link to="/home/teacher">教师用户</router-link>
-                            </el-menu-item>
-                            <el-menu-item index="1-4">
-                                <router-link to="/home/firm">企业用户</router-link>
-                            </el-menu-item>
-                        </el-menu-item-group>
-                    </el-submenu>
-
-
-                    <el-menu-item index="3">
-                        <i class="el-icon-document"></i>
-                        <span slot="title">用户管理</span>
-                    </el-menu-item>
-
-                    <el-menu-item index="4">
-                        <i class="el-icon-setting"></i>
-                        <span slot="title">简历管理</span>
-                    </el-menu-item>
-
-                    <el-menu-item index="5">
-                        <i class="el-icon-setting"></i>
-                        <span slot="title">招聘信息管理</span>
-                    </el-menu-item>
-
-                    <el-menu-item index="2">
-                        <i class="el-icon-menu"></i>
-                        <span slot="title">就业信息管理</span>
-                    </el-menu-item>
-                </el-menu>
-            </el-aside>
-            <el-main>
-                <router-view/>
-            </el-main>
-        </el-container>
+          </el-dialog>
+        </div>
+        <router-view/>
+      </el-main>
     </el-container>
+  </el-container>
+
 </template>
 
 <script>
 
+import {updatePassword} from "@/network/user/user";
+
 export default {
-    name: 'Home',
-    created() {
-    },
-    data() {
-        return {
-            activeIndex: '1',
-        }
-    },
-    methods: {
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        handleOpen(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        handleClose(key, keyPath) {
-            console.log(key, keyPath);
-        }
+  name: 'Home',
+  created() {
+    this.loginUser = JSON.parse(localStorage.getItem("data"))
+  },
+  data() {
+    return {
+      formData: {
+        oldPassword: undefined,
+        newPassword: undefined,
+      },
+      rules: {
+        oldPassword: [{
+          required: true,
+          message: '请入输旧密码',
+          trigger: 'blur'
+        }],
+        newPassword: [{
+          required: true,
+          message: '请输入新密码',
+          trigger: 'blur'
+        }],
+      },
+      loginUser: {
+        userName: '',
+      },
+
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+
+      activeIndex: '1',
     }
+  },
+  methods: {
+    logout() {
+      window.localStorage.removeItem("data")
+      this.$router.push("/login")
+    },
+    updatePassword() {
+      this.dialogFormVisible = true
+    },
+    onOpen() {
+    },
+    onClose() {
+      this.$refs['elForm'].resetFields()
+    },
+    close() {
+      this.$emit('update:visible', false)
+      this.dialogFormVisible = false
+    },
+    handelConfirm() {
+      updatePassword(this.formData.oldPassword, this.formData.newPassword).then(res => {
+        this.dialogFormVisible = false
+        console.log(res)
+        if (res.data === false) {
+          this.$message.error(res.message);
+        } else (
+            this.$message.success(res.message),
+                this.logout()
+        )
+      })
+    },
+  },
 }
 </script>
 

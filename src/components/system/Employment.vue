@@ -1,16 +1,15 @@
 <template>
   <div class="admin">
     <el-card>
-      <el-page-header @back="goBack" content="教师信息管理"></el-page-header>
+      <el-page-header @back="goBack" content="就业信息管理"></el-page-header>
     </el-card>
     <el-card>
       <div class="condition">
         <el-input type="text" v-model="str" clearable @clear="fetchData" placeholder="请输入关键字"/>
         <el-button type="primary" class="search" @click="fetchData">搜索</el-button>
-        <el-button type="primary" @click="saveHandle" v-if="loginUser.type===3">添加招聘信息</el-button>
+        <el-button type="primary" @click="saveHandle" v-if="loginUser.type===1">添加就业信息</el-button>
 
         <el-button
-            v-if="(loginUser.type!=1)"
             type="danger"
             icon="el-icon-delete"
             class="deleteLs"
@@ -40,25 +39,43 @@
         </el-table-column>
 
         <el-table-column
-            prop="tname"
-            label="姓名">
+            prop="jid"
+            label="ID"
+            width="55">
         </el-table-column>
         <el-table-column
-            prop="gender"
-            label="性别"
-            :formatter="formatSex">
+            prop="cname"
+            label="公司姓名">
+        </el-table-column>
+
+        <el-table-column
+            prop="nature"
+            label="公司性质">
         </el-table-column>
         <el-table-column
             prop="department"
-            label="院系">
+            label="部门">
         </el-table-column>
         <el-table-column
-            prop="title"
-            label="职称">
+            prop="position"
+            label="岗位">
         </el-table-column>
         <el-table-column
-            prop="tel"
-            label="联系电话">
+            prop="workAge"
+            label="工作年限">
+        </el-table-column>
+
+        <el-table-column
+            prop="salary"
+            label="薪资">
+        </el-table-column>
+        <el-table-column
+            prop="situation"
+            label="工作情况">
+        </el-table-column>
+        <el-table-column
+            prop="createTime"
+            label="录入时间">
         </el-table-column>
 
         <el-table-column
@@ -67,13 +84,8 @@
             width="120px">
           <template slot-scope="scope">
             <div class="button">
-              <el-button v-if="(loginUser.type!=1)" type="primary" icon="el-icon-edit"
-                         @click="editHandle(scope.row)"></el-button>
-              <el-button v-if="(loginUser.type!=1) " type="danger" icon="el-icon-delete"
-                         @click="deleteHandle(scope.row)"></el-button>
-              <el-button v-if="loginUser.type===1" type="primary" @click="">
-                投递
-              </el-button>
+              <el-button type="primary" icon="el-icon-edit" @click="editHandle(scope.row)"></el-button>
+              <el-button type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row)"></el-button>
             </div>
           </template>
         </el-table-column>
@@ -92,37 +104,35 @@
       </div>
     </el-card>
 
-    <el-dialog @close="addDiaClose" title="教师" :visible.sync="dialogFormVisible">
+    <el-dialog @close="addDiaClose" title="就业信息" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-
-        <el-form-item label="姓名" prop="tname">
-          <el-input v-model="form.tname" placeholder="请输入姓名" clearable :style="{width: '100%'}">
-          </el-input>
+        <el-form-item label="公司名称" :label-width="formLabelWidth">
+          <el-input v-model="form.cname" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="性别" prop="gender">
-          <el-radio-group v-model="form.gender" size="medium" >
-            <el-radio-button v-for="(item, index) in genderOptions" :key="index" :label="item.value"
-                             :disabled="item.disabled">{{item.label}}</el-radio-button>
-          </el-radio-group>
+        <el-select v-model="form.nature" placeholder="公司性质">
+          <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+          </el-option>
+        </el-select>
+        <el-form-item label="部门" :label-width="formLabelWidth">
+          <el-input v-model="form.department" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="院系" prop="department">
-          <el-input v-model="form.department" placeholder="请输入院系" clearable :style="{width: '100%'}">
-          </el-input>
+        <el-form-item label="岗位" :label-width="formLabelWidth">
+          <el-input v-model="form.position" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="职称" prop="title">
-          <el-select v-model="form.title" placeholder="请选择职称" clearable :style="{width: '100%'}">
-            <el-option v-for="(item, index) in titleOptions" :key="index" :label="item.label"
-                       :value="item.value" :disabled="item.disabled"></el-option>
-          </el-select>
+        <el-form-item label="工作年限" :label-width="formLabelWidth">
+          <el-input v-model="form.workAge" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="联系电话" prop="tel">
-          <el-input v-model="form.tel" placeholder="请输入联系电话" clearable :style="{width: '100%'}">
-          </el-input>
+        <el-form-item label="薪资" :label-width="formLabelWidth">
+          <el-input v-model="form.salary" autocomplete="off"></el-input>
         </el-form-item>
-
+        <el-form-item label="工作情况" :label-width="formLabelWidth">
+          <el-input v-model="form.situation" autocomplete="off"></el-input>
+        </el-form-item>
       </el-form>
-
-
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="updateOrAdd">确 定</el-button>
@@ -134,11 +144,11 @@
 
 <script>
 import {
-  AddTeacherHandle, delAllTeacherIpserver,
-  deleteTeacherHandle,
-  getAllTeacherHandle,
-  updateTeacherHandle
-} from "@/network/user/teacher";
+  AddEmploymentHandle, delAllEmploymentIpserver,
+  deleteEmploymentHandle,
+  getAllEmploymentHandle,
+  updateEmploymentHandle
+} from "@/network/user/employment";
 
 export default {
   name: `User`,
@@ -147,7 +157,6 @@ export default {
     this.loginUser = JSON.parse(localStorage.getItem("data"))
     // 数据初始化
     this.fetchData();
-    console.log(this.tableData)
   },
   data() {
     return {
@@ -156,6 +165,13 @@ export default {
         userId: '',
         type: ''
       },
+      options: [{
+        value: '私企',
+        label: '私企'
+      }, {
+        value: '国企',
+        label: '国企'
+      }],
       value: '',
       gridData: [],
       multipleSelection: [],
@@ -168,68 +184,22 @@ export default {
       pageNum: 1,
       tableData: [],
       dialogVisible: false,
-
-      //form表单
+      //from表单
       form: {
-        tid: '',
-        userid: '',
-        gender: '',
-        department: '',
-        title: '',
-        tel: '',
-        createTime: '',
-        tname: '',
+        jid: "",
+        sid: "",
+        cname: "",
+        nature: "",
+        department: "",
+        position: "",
+        workAge: "",
+        salary: "",
+        situation: "",
+        createTime: "",
       },
       addOrUpdate: 0,
       formLabelWidth: '120px',
-      updateId: '',
-      rules: {
-        tname: [{
-          required: true,
-          message: '请输入姓名',
-          trigger: 'blur'
-        }],
-        gender: [{
-          required: true,
-          message: '性别不能为空',
-          trigger: 'change'
-        }],
-        department: [{
-          required: true,
-          message: '请输入院系',
-          trigger: 'blur'
-        }],
-        title: [{
-          required: true,
-          message: '请选择职称',
-          trigger: 'change'
-        }],
-        tel: [{
-          required: true,
-          message: '请输入联系电话',
-          trigger: 'blur'
-        }],
-      },
-      genderOptions: [{
-        "label": "男",
-        "value": 0
-      }, {
-        "label": "女",
-        "value": 1
-      }],
-      titleOptions: [{
-        "label": "教授",
-        "value": "教授"
-      }, {
-        "label": "副教授",
-        "value": "副教授"
-      }, {
-        "label": "讲师",
-        "value": "讲师"
-      }, {
-        "label": "助教",
-        "value": "助教"
-      }],
+      updateId: ''
     }
   },
   methods: {
@@ -252,8 +222,8 @@ export default {
     //添加操作
     addOK() {
       console.log(this.loginUser)
-      AddTeacherHandle(this.form).then(res => {
-        // this.fetchData()
+      AddEmploymentHandle(this.form).then(res => {
+        this.fetchData()
         this.dialogFormVisible = false
       })
     },
@@ -265,20 +235,22 @@ export default {
     //关闭添加界面
     addDiaClose() {
       this.form = {
-        tid: '',
-        userid: '',
-        gender: '',
-        department: '',
-        title: '',
-        tel: '',
-        createTime: '',
-        tname: '',
+        jid: "",
+        sid: "",
+        cname: "",
+        nature: "",
+        department: "",
+        position: "",
+        workAge: "",
+        salary: "",
+        situation: "",
+        createTime: "",
       }
     },
     // 修改操作
     updateOk() {
-      console.log("update info: ", this.form)
-      updateTeacherHandle(this.form).then(res => {
+      // console.log("update info: ", this.form)
+      updateEmploymentHandle(this.form).then(res => {
         // this.$message.success(res.message)
         this.fetchData()
         this.dialogFormVisible = false
@@ -288,28 +260,27 @@ export default {
     editHandle(row) {
       this.dialogFormVisible = true
       // 数据回显
-      this.form.tid = row.tid
-      this.form.userid = row.userid
-      this.form.gender = row.gender
+      this.form.cname = row.cname
+      this.form.nature = row.nature
       this.form.department = row.department
-      this.form.title = row.title
-      this.form.tel = row.tel
-      this.form.createTime = row.createTime
+      this.form.position = row.position
+      this.form.workAge = row.workAge
       this.form.salary = row.salary
-      this.form.tname = row.tname
-
+      this.form.situation = row.situation
+      this.form.jid = row.jid
+      this.form.sid = row.sid
       this.addOrUpdate = 0
     },
 
     //删除操作
     deleteHandle(row) {
-      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该就业信息, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         console.log('deleteHandle: ', row.jid)
-        deleteTeacherHandle(row).then(res => {
+        deleteEmploymentHandle(row).then(res => {
           if (res.code == 200) {
             this.$message.success('删除成功');
           } else {
@@ -327,8 +298,7 @@ export default {
     },
     // 表格获取数据
     fetchData() {
-      getAllTeacherHandle(this.pageNum, this.pageSize, this.str).then(res => {
-        console.log(res)
+      getAllEmploymentHandle(this.loginUser.userId, this.loginUser.type, this.pageNum, this.pageSize, this.str).then(res => {
         this.pageSize = res.data.size
         this.pageNum = res.data.current
         this.total = res.data.total
@@ -339,7 +309,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       this.pageSize = val
-      getAllTeacherHandle(this.pageNum, this.pageSize, this.str).then(res => {
+      getAllEmploymentHandle(this.pageNum, this.pageSize, this.str).then(res => {
         console.log(res)
         this.tableData = res.data.records
       })
@@ -348,10 +318,9 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.pageNum = val
-      getAllTeacherHandle(this.pageNum, this.pageSize, this.str).then(res => {
+      getAllEmploymentHandle(this.pageNum, this.pageSize, this.str).then(res => {
         console.log(res)
         this.tableData = res.data.records
-        console.log(res.data.records)
       })
     },
 
@@ -377,7 +346,7 @@ export default {
         callback: action => {
           if (action === 'confirm') {
             //批量删除
-            delAllTeacherIpserver(arr).then(response => {
+            delAllEmploymentIpserver(arr).then(response => {
               this.$notify({
                 title: '删除成功',
                 message: '',

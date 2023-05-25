@@ -22,7 +22,7 @@
 
                 <el-table-column
                         prop="aid"
-                        label="日期"
+                        label="ID"
                         width="180">
                 </el-table-column>
                 <el-table-column
@@ -30,15 +30,16 @@
                         label="姓名"
                         width="180">
                 </el-table-column>
+
+              <el-table-column
+                  prop="tel"
+                  label="手机号">
+              </el-table-column>
                 <el-table-column
                         prop="email"
-                        label="地址">
+                        label="邮箱">
                 </el-table-column>
 
-                <el-table-column
-                        prop="tel"
-                        label="地址">
-                </el-table-column>
 
                 <el-table-column
                         prop="tel"
@@ -63,7 +64,7 @@
             </div>
         </el-card>
 
-        <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+        <el-dialog title="管理员信息" :visible.sync="dialogFormVisible">
             <el-form :model="form">
                 <el-form-item label="姓名" :label-width="formLabelWidth">
                     <el-input v-model="form.aname" autocomplete="off"></el-input>
@@ -85,7 +86,7 @@
 </template>
 
 <script>
-import {getAllAdminHandle, deleteUserHandle, updateUserHandle} from "@/network/user/system";
+import {getAllAdminHandle, deleteAdminHandle, updateAdminHandle} from "@/network/user/admin";
 
 export default {
     name: `Admin`,
@@ -115,12 +116,11 @@ export default {
             formLabelWidth: '120px',
             updateId: ''
         }
-    }
-    ,
+    },
     methods: {
         updateOk() {
             console.log("update info: ", this.form)
-            updateUserHandle(this.form).then(res => {
+            updateAdminHandle(this.form).then(res => {
                 this.$message.success(res.msg)
                 this.fetchData()
                 this.dialogFormVisible = false
@@ -146,6 +146,7 @@ export default {
                 this.tableData = res.data.records
             })
         },
+      // 修改操作
         editHandle(row) {
             this.dialogFormVisible = true
             // 数据回显
@@ -154,8 +155,8 @@ export default {
             this.form.aname = row.aname
             this.form.email = row.email
             this.form.tel = row.tel
-
         },
+      //删除操作
         deleteHandle(row) {
             this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -164,7 +165,7 @@ export default {
             }).then(() => {
                 // TODO: 发送删除请求
                 console.log('deleteHandle: ', row.aid)
-                deleteUserHandle(row.aid).then(res => {
+                deleteAdminHandle(row.aid).then(res => {
                     this.$message.success('删除成功');
                     // 刷新数据
                     this.fetchData()
@@ -176,7 +177,7 @@ export default {
                 });
             });
         },
-        // 获取数据
+        // 表格获取数据
         fetchData() {
             console.log("this.pageNum: ", this.pageNum)
             getAllAdminHandle(this.pageNum, this.pageSize).then(res => {

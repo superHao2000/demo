@@ -8,7 +8,7 @@ export function getAllAdminHandle(pageNum, pageSize) {
     });
 }
 
-export function deleteUserHandle(aid) {
+export function deleteAdminHandle(aid) {
     return request({
         method: "post",
         url: "/admin/deleteOne",
@@ -17,7 +17,7 @@ export function deleteUserHandle(aid) {
         }
     });
 }
-export function updateUserHandle(admin) {
+export function updateAdminHandle(admin) {
     return request({
         method: "post",
         url: "/admin/update",

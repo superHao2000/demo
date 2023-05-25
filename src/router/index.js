@@ -42,7 +42,23 @@ const routes = [
             {
                 path: 'firm',
                 component: () => import('@/components/system/Firm.vue'),
-            }
+            },
+            {
+                path: 'user',
+                component: () => import('@/components/system/User.vue'),
+            },
+            {
+                path: 'employment',
+                component: () => import('@/components/system/Employment.vue'),
+            },
+            {
+                path: 'resume',
+                component: () => import('@/components/system/Resume.vue'),
+            },
+            {
+                path: 'recruitment',
+                component: () => import('@/components/system/Recruitment.vue'),
+            },
         ]
     }
 ]
