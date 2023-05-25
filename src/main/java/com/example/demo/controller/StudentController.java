@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.CommonResult;
+import com.example.demo.common.R;
 import com.example.demo.pojo.Student;
 import com.example.demo.pojo.User;
 import com.example.demo.service.StudentService;
@@ -20,6 +21,7 @@ import java.util.List;
  * @author super
  * @date 2023/05/22
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/student")
 @Slf4j
@@ -34,14 +36,14 @@ public class StudentController {
      * @param pageNum
      * @return {@link CommonResult}<{@link IPage}<{@link Student}>>
      */
-    @GetMapping("/getAllStudent")
-    public CommonResult<IPage<Student>> getAllStudent(@RequestParam("limit") int pageSize,
-                                                      @RequestParam("page") int pageNum) {
-        Page<Student> page = new Page<>(1, 10);
-        LambdaQueryWrapper<Student> qw = new LambdaQueryWrapper<>();
-        qw.orderByDesc(Student::getCreateTime);
-        studentService.page(page, qw);
-        return CommonResult.generateSuccessResult(page.getPages(), page);
+    @GetMapping("/getAllStudent/{pageNum}/{pageSize}")
+    public R getAllStudent(@PathVariable("pageNum") Integer pageNum,
+                           @PathVariable("pageSize") Integer pageSize) {
+        Page<Student> page = new Page<>(pageNum, pageSize);
+        // LambdaQueryWrapper<Student> qw = new LambdaQueryWrapper<>();
+        // qw.orderByDesc(Student::getCreateTime);
+        IPage<Student> page1 = studentService.page(page);
+        return new R(200, "获取分页数据", page1);
     }
 
     /**
@@ -77,7 +79,7 @@ public class StudentController {
      * @return {@link CommonResult}<{@link Boolean}>
      */
     @PostMapping("update")
-    public CommonResult<Boolean> updateById(Student student) {
+    public CommonResult<Boolean> updateById(@RequestBody Student student) {
         boolean b = studentService.updateById(student);
         return CommonResult.generateSuccessResult(1, b);
     }
@@ -88,10 +90,10 @@ public class StudentController {
      * @param student
      * @return {@link CommonResult}<{@link Boolean}>
      */
-    @PostMapping("delete")
-    public CommonResult<Boolean> removeById(Student student) {
+    @PostMapping("deleteOne")
+    public CommonResult<Boolean> removeById(@RequestBody Student student) {
         boolean b = studentService.removeById(student);
-        return CommonResult.generateSuccessResult(1, b);
+        return CommonResult.generateSuccessResult("修改成功",1, b);
     }
 
     /**
@@ -100,7 +102,7 @@ public class StudentController {
      * @param students
      * @return {@link CommonResult}<{@link Boolean}>
      */
-    @PostMapping("deleteba")
+    @PostMapping("deleteBatch")
     public CommonResult<Boolean> removeBatchByIds(List<Student> students) {
         boolean b = studentService.removeBatchByIds(students);
         return CommonResult.generateSuccessResult(1, b);

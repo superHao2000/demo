@@ -1,10 +1,12 @@
 package com.example.demo.pojo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.baomidou.mybatisplus.annotation.*;
 import com.example.demo.pojo.enumeration.Gender;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("resume")
+@Slf4j
 public class Resume {
     /**
      * 简历id
@@ -33,11 +36,14 @@ public class Resume {
     /**
      * 性别
      */
-    private Gender gender;
+    private Integer gender;
     /**
      * 生日
      */
-    private LocalDateTime birthdate;
+    // @JSONField(format = "yyyy-MM-dd")
+    // @JsonFormat(pattern = "yyyy-MM-dd", locale = "zh", timezone = "GMT+8")
+    // @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private String birthdate;
     /**
      * 联系方式
      */
@@ -73,6 +79,8 @@ public class Resume {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime createTime;
 
 }

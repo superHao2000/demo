@@ -1,8 +1,7 @@
 package com.example.demo.pojo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -52,7 +51,9 @@ public class Recruitment {
     /**
      * 发布时间
      */
-    private LocalDateTime releaseTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime createTime;
     /**
      * 投递人数
      */

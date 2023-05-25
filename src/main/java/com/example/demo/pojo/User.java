@@ -1,10 +1,8 @@
 package com.example.demo.pojo;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.example.demo.pojo.enumeration.UserType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.Value;
 
@@ -37,13 +35,20 @@ public class User {
     /**
      * 用户类型
      */
-    private int type;
+    private Integer type;
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime createTime;
     /**
      * 最后登陆时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     private LocalDateTime lastLoginTime;
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
 }

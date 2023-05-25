@@ -1,9 +1,8 @@
 package com.example.demo.pojo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.example.demo.pojo.enumeration.Gender;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -34,7 +33,7 @@ public class Teacher {
     /**
      * 性别
      */
-    private Gender gender;
+    private Integer gender;
     /**
      * 院系
      */
@@ -42,13 +41,13 @@ public class Teacher {
     /**
      * 职称
      */
-    private String titLe;
+    private String title;
     /**
      * 联系电话
      */
     private String tel;
-    /**
-     * 创建时间
-     */
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime createTime;
 }

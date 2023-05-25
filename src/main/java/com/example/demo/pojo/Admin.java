@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 @TableName("admin")
-public class Admin {
+public class Admin implements Serializable {
 
     /**
      * 管理员id
@@ -30,4 +32,12 @@ public class Admin {
      * 联系邮箱
      */
     private String email;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 }

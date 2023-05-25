@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.CommonResult;
+import com.example.demo.common.R;
 import com.example.demo.pojo.Student;
 import com.example.demo.pojo.Teacher;
 import com.example.demo.pojo.User;
@@ -20,6 +21,7 @@ import java.util.List;
  * @date 2023/05/22
  */
 @RestController
+@CrossOrigin
 @RequestMapping("teacher")
 public class TeacherController {
     @Autowired
@@ -32,14 +34,12 @@ public class TeacherController {
      * @param pageSize
      * @return {@link CommonResult}<{@link IPage}<{@link Teacher}>>
      */
-    @GetMapping("/getAllStudent")
-    public CommonResult<IPage<Teacher>> getAllStudent(@RequestParam("limit") int pageNum,
-                                                      @RequestParam("page") int pageSize) {
+    @GetMapping("/getAllTeacher/{pageNum}/{pageSize}")
+    public R getAllTeacher(@PathVariable("pageNum") Integer pageNum,
+                           @PathVariable("pageSize") Integer pageSize) {
         Page<Teacher> page = new Page<>(pageNum, pageSize);
-        LambdaQueryWrapper<Teacher> qw = new LambdaQueryWrapper<>();
-        qw.orderByDesc(Teacher::getCreateTime);
-        teacherService.page(page, qw);
-        return CommonResult.generateSuccessResult(page.getPages(), page);
+        Page<Teacher> page1 = teacherService.page(page);
+        return new R(200, "获取分页数据", page1);
     }
 
     /**
@@ -63,7 +63,7 @@ public class TeacherController {
      * @return {@link CommonResult}<{@link Boolean}>
      */
     @PostMapping("save")
-    public CommonResult<Boolean> save(Teacher teacher) {
+    public CommonResult<Boolean> save(@RequestBody Teacher teacher) {
         boolean b = teacherService.save(teacher);
         return CommonResult.generateSuccessResult(1, b);
     }
@@ -75,7 +75,7 @@ public class TeacherController {
      * @return {@link CommonResult}<{@link Boolean}>
      */
     @PostMapping("update")
-    public CommonResult<Boolean> updateById(Teacher teacher) {
+    public CommonResult<Boolean> updateById(@RequestBody Teacher teacher) {
         boolean b = teacherService.updateById(teacher);
         return CommonResult.generateSuccessResult(1, b);
     }

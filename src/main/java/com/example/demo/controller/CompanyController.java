@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.CommonResult;
+import com.example.demo.common.R;
 import com.example.demo.pojo.Company;
 import com.example.demo.pojo.Company;
 import com.example.demo.pojo.User;
@@ -19,6 +20,7 @@ import java.util.List;
  * @date 2023/05/22
  */
 @RestController
+@CrossOrigin
 @RequestMapping("company")
 public class CompanyController {
     @Autowired
@@ -29,13 +31,13 @@ public class CompanyController {
      * @param pageNum
      * @return {@link CommonResult}<{@link Page}<{@link Company}>>
      */
-    @GetMapping("getAllCompany")
-    public CommonResult<Page<Company>> getAllCompany(@RequestParam("limit") int pageSize,
-                                                     @RequestParam("page") int pageNum) {
+    @GetMapping("getAllCompany/{pageNum}/{pageSize}")
+    public R getAllCompany(@PathVariable("pageNum") Integer pageNum,
+                           @PathVariable("pageSize") Integer pageSize) {
         Page<Company> page = new Page<>(pageNum, pageSize);
         LambdaQueryWrapper<Company> qw = new LambdaQueryWrapper<>();
         Page<Company> page1 = companyService.page(page, qw);
-        return CommonResult.generateSuccessResult(page1.getSize(), page1);
+        return new R(200, "获取分页数据", page1);
     }
 
     /**
@@ -59,7 +61,7 @@ public class CompanyController {
      * @return {@link CommonResult}<{@link Boolean}>
      */
     @PostMapping("save")
-    public CommonResult<Boolean> save(Company Company) {
+    public CommonResult<Boolean> save(@RequestBody Company Company) {
         boolean b = companyService.save(Company);
         return CommonResult.generateSuccessResult(1, b);
     }
@@ -71,7 +73,7 @@ public class CompanyController {
      * @return {@link CommonResult}<{@link Boolean}>
      */
     @PostMapping("update")
-    public CommonResult<Boolean> updateById(Company Company) {
+    public CommonResult<Boolean> updateById(@RequestBody Company Company) {
         boolean b = companyService.updateById(Company);
         return CommonResult.generateSuccessResult(1, b);
     }
@@ -83,7 +85,7 @@ public class CompanyController {
      * @return {@link CommonResult}<{@link Boolean}>
      */
     @PostMapping("delete")
-    public CommonResult<Boolean> removeById(Company Company) {
+    public CommonResult<Boolean> removeById(@RequestBody Company Company) {
         boolean b = companyService.removeById(Company);
         return CommonResult.generateSuccessResult(1, b);
     }
@@ -95,7 +97,7 @@ public class CompanyController {
      * @return {@link CommonResult}<{@link Boolean}>
      */
     @PostMapping("deleteba")
-    public CommonResult<Boolean> removeBatchByIds(List<Company> Companys) {
+    public CommonResult<Boolean> removeBatchByIds(@RequestBody List<Company> Companys) {
         boolean b = companyService.removeBatchByIds(Companys);
         return CommonResult.generateSuccessResult(1, b);
     }

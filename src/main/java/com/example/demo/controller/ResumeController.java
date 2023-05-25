@@ -4,13 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.CommonResult;
-import com.example.demo.pojo.Company;
+import com.example.demo.common.R;
 import com.example.demo.pojo.Resume;
 import com.example.demo.pojo.Student;
 import com.example.demo.pojo.User;
 import com.example.demo.service.ResumeService;
-import com.example.demo.service.ResumeService;
 import com.example.demo.service.StudentService;
+import com.example.demo.utlis.BaseContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +24,8 @@ import java.util.List;
  * @date 2023/05/22
  */
 @RestController
-@RequestMapping("Resume")
+@CrossOrigin
+@RequestMapping("resume")
 public class ResumeController {
     @Autowired
     ResumeService resumeService;
@@ -38,12 +39,39 @@ public class ResumeController {
      * @param pageSize
      * @return {@link CommonResult}<{@link IPage}<{@link Resume}>>
      */
-    @GetMapping("/getAllStudent")
-    public CommonResult<IPage<Resume>> getAllStudent(@RequestParam("limit") int pageNum,
-                                                     @RequestParam("page") int pageSize) {
+    @GetMapping("/getAllResume/{pageNum}/{pageSize}")
+    public R getAllResume(@RequestParam("userId") Integer userId,
+                          @RequestParam("type") Integer type,
+                          @PathVariable("pageNum") Integer pageNum,
+                          @PathVariable("pageSize") Integer pageSize,
+                          @RequestParam("str") String str) {
         Page<Resume> page = new Page<>(pageNum, pageSize);
-        resumeService.page(page, null);
-        return CommonResult.generateSuccessResult(page.getPages(), page);
+
+        if (type == 0) {
+            // 管理员查询
+            LambdaQueryWrapper<Resume> qw = new LambdaQueryWrapper<>();
+            qw.or().like(Resume::getEmail, str)
+              .or().like(Resume::getName, str)
+              .or().like(Resume::getTel, str)
+              .or().like(Resume::getMajor, str)
+              .or().like(Resume::getSkill, str);
+            resumeService.page(page, qw);
+            return new R(200, "管理员查询", page);
+        } else if (type == 1) {
+            // 学生查询
+            Student student = studentService.getOne(
+                    new LambdaQueryWrapper<Student>()
+                            .eq(Student::getUserid, userId)
+            );
+            Integer sid = student.getSid();
+            LambdaQueryWrapper<Resume> qw = new LambdaQueryWrapper<>();
+            qw.eq(Resume::getSid, sid)
+              .like(Resume::getName, str);
+            resumeService.page(page, qw);
+            return new R(200, "学生查询简历", page);
+        } else {
+            return new R(200, "教师查询简历", page);
+        }
     }
 
     /**
@@ -54,16 +82,20 @@ public class ResumeController {
      * @param pageSize
      * @return {@link CommonResult}<{@link Page}<{@link Resume}>>
      */
-    @GetMapping("/getForId")
+    @PostMapping("/getForId")
     public CommonResult<Page<Resume>> getForId(User user,
                                                @RequestParam("limit") int pageNum,
                                                @RequestParam("page") int pageSize) {
         Page<Resume> page = new Page<>(pageNum, pageSize);
-        Student student = studentService.getOne(
-                new LambdaQueryWrapper<Student>().eq(Student::getUserid, user.getUserId()));
-        LambdaQueryWrapper<Resume> qw = new LambdaQueryWrapper<>();
-        qw.eq(Resume::getResumeId, student.getSid());
-        resumeService.page(page, qw);
+        if (user.getType() == 0) {
+            resumeService.page(page, null);
+        } else {
+            Student student = studentService.getOne(
+                    new LambdaQueryWrapper<Student>().eq(Student::getUserid, user.getUserId()));
+            LambdaQueryWrapper<Resume> qw = new LambdaQueryWrapper<>();
+            qw.eq(Resume::getResumeId, student.getSid());
+            resumeService.page(page, qw);
+        }
         return CommonResult.generateSuccessResult(1, page);
     }
 
@@ -74,11 +106,15 @@ public class ResumeController {
      * @return {@link CommonResult}<{@link Boolean}>
      */
     @PostMapping("save")
-    public CommonResult<Boolean> save(User user, Resume resume) {
-        resume.setSid(user.getUserId());
-        resume.setCreateTime(LocalDateTime.now());
+    public R save(@RequestBody Resume resume) {
+        User user = BaseContext.getUser();
+        Student student = studentService.getOne(
+                new LambdaQueryWrapper<Student>()
+                        .eq(Student::getUserid, user.getUserId())
+        );
+        resume.setSid(student.getSid());
         boolean b = resumeService.save(resume);
-        return CommonResult.generateSuccessResult(1, b);
+        return new R(200, "添加成功", b);
     }
 
     /**
@@ -88,7 +124,7 @@ public class ResumeController {
      * @return {@link CommonResult}<{@link Boolean}>
      */
     @PostMapping("update")
-    public CommonResult<Boolean> updateById(Resume resume) {
+    public CommonResult<Boolean> updateById(@RequestBody Resume resume) {
         boolean b = resumeService.updateById(resume);
         return CommonResult.generateSuccessResult(1, b);
     }
@@ -100,7 +136,7 @@ public class ResumeController {
      * @return {@link CommonResult}<{@link Boolean}>
      */
     @PostMapping("delete")
-    public CommonResult<Boolean> removeById(Resume resume) {
+    public CommonResult<Boolean> removeById(@RequestBody Resume resume) {
         boolean b = resumeService.removeById(resume);
         return CommonResult.generateSuccessResult(1, b);
     }
@@ -111,10 +147,10 @@ public class ResumeController {
      * @param resume
      * @return {@link CommonResult}<{@link Boolean}>
      */
-    @PostMapping("deleteba")
-    public CommonResult<Boolean> removeBatchByIds(List<Resume> resume) {
+    @PostMapping("deleteAll")
+    public R removeBatchByIds(@RequestBody List<Resume> resume) {
         boolean b = resumeService.removeBatchByIds(resume);
-        return CommonResult.generateSuccessResult(1, b);
+        return new R(200, "删除成功", b);
     }
 
 }
