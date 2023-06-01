@@ -59,6 +59,20 @@ public class EmploymentController {
                                            .like(Employment::getCname, str)
                                            .eq(Employment::getSid, student.getSid()));
             return new R(200, "学生查询", page);
+        } else if (type == 2) {
+            Teacher teacher = teacherService.getOne(
+                    new LambdaQueryWrapper<Teacher>()
+                            .eq(Teacher::getUserid, userId)
+            );
+            List<Object> studentIds = studentService.listObjs(new LambdaQueryWrapper<Student>()
+                                                                      .eq(Student::getTid, teacher.getTid())
+                                                                      .select(Student::getSid)
+            );
+            employmentService.page(page,
+                                   new LambdaQueryWrapper<Employment>()
+                                           .in(Employment::getSid, studentIds)
+            );
+            return new R(200, "学生查询", page);
         } else {
             return new R(200, "教师查询", 1);
         }
@@ -142,7 +156,7 @@ public class EmploymentController {
     @PostMapping("deletebAll")
     public R removeBatchByIds(@RequestBody List<Employment> employment) {
         boolean b = employmentService.removeBatchByIds(employment);
-        return new R(200,"删除成功",b);
+        return new R(200, "删除成功", b);
     }
 
 }

@@ -5,11 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.CommonResult;
 import com.example.demo.common.R;
-import com.example.demo.pojo.Resume;
-import com.example.demo.pojo.Student;
-import com.example.demo.pojo.User;
-import com.example.demo.service.ResumeService;
-import com.example.demo.service.StudentService;
+import com.example.demo.pojo.*;
+import com.example.demo.service.*;
 import com.example.demo.utlis.BaseContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +28,14 @@ public class ResumeController {
     ResumeService resumeService;
     @Autowired
     StudentService studentService;
+    @Autowired
+    TeacherService teacherService;
+    @Autowired
+    CompanyService companyService;
+    @Autowired
+    RecruitmentService recruitmentService;
+    @Autowired
+    DeliveryService deliveryService;
 
     /**
      * 查看所有简历信息
@@ -69,8 +74,36 @@ public class ResumeController {
               .like(Resume::getName, str);
             resumeService.page(page, qw);
             return new R(200, "学生查询简历", page);
-        } else {
+        } else if (type == 2) {
+            Teacher teacher = teacherService.getOne(
+                    new LambdaQueryWrapper<Teacher>()
+                            .eq(Teacher::getUserid, userId)
+            );
+            List<Object> studentIds = studentService.listObjs(new LambdaQueryWrapper<Student>()
+                                                                      .eq(Student::getTid, teacher.getTid())
+                                                                      .select(Student::getSid)
+            );
+            resumeService.page(page,
+                               new LambdaQueryWrapper<Resume>()
+                                       .in(Resume::getSid, studentIds)
+            );
             return new R(200, "教师查询简历", page);
+        } else if (type == 3) {
+            // 企业查询
+            Company company = companyService.getOne(
+                    new LambdaQueryWrapper<Company>()
+                            .eq(Company::getUserid, userId));
+            List<Object> recruitmentIds = recruitmentService.listObjs(
+                    new LambdaQueryWrapper<Recruitment>()
+                            .eq(Recruitment::getEid, company.getEid())
+                            .select(Recruitment::getRecruitmentId));
+            List<String> resumeIds = deliveryService.selectResumeIdsByRecruitmentIds(recruitmentIds);
+            resumeService.page(page, new LambdaQueryWrapper<Resume>()
+                    .in(Resume::getResumeId, resumeIds));
+            return new R(200, "企业查询简历", page);
+
+        } else {
+            return new R(200, "查询简历", page);
         }
     }
 

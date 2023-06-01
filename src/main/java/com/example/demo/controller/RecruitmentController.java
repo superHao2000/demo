@@ -48,7 +48,7 @@ public class RecruitmentController {
                                @RequestParam("str") String str) {
         Page<Recruitment> page = new Page<>(pageNum, pageSize);
 
-        if (type == 0 || type==1) {
+        if (type == 0 || type==1 || type==2)  {
             // 管理员查询
             // 学生查询
             LambdaQueryWrapper<Recruitment> qw = new LambdaQueryWrapper<>();
@@ -60,7 +60,9 @@ public class RecruitmentController {
             recruitmentService.page(page, qw);
             return new R(200, "管理员查询招聘信息", page);
         } else if (type == 3) {
-            Company company = companyService.getOne(new LambdaQueryWrapper<Company>().eq(Company::getUserid, userId));
+            Company company = companyService.getOne(
+                    new LambdaQueryWrapper<Company>()
+                            .eq(Company::getUserid, userId));
             recruitmentService.page(page,
                                     new LambdaQueryWrapper<Recruitment>()
                                             .eq(Recruitment::getEid, company.getEid()));

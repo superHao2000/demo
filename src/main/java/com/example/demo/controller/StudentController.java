@@ -9,6 +9,7 @@ import com.example.demo.pojo.Student;
 import com.example.demo.pojo.User;
 import com.example.demo.service.StudentService;
 import com.example.demo.service.UserService;
+import com.example.demo.utlis.BaseContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -53,11 +54,12 @@ public class StudentController {
      * @return {@link CommonResult}<{@link Student}>
      */
     @GetMapping("/getOne")
-    public CommonResult<Student> getOne(User user) {
+    public R getOne() {
+        User user = BaseContext.getUser();
         LambdaQueryWrapper<Student> qw = new LambdaQueryWrapper<>();
         qw.eq(Student::getUserid, user.getUserId());
         Student one = studentService.getOne(qw);
-        return CommonResult.generateSuccessResult(1, one);
+        return new R(200, "获取一条学生数据", one);
     }
 
     /**
@@ -79,9 +81,9 @@ public class StudentController {
      * @return {@link CommonResult}<{@link Boolean}>
      */
     @PostMapping("update")
-    public CommonResult<Boolean> updateById(@RequestBody Student student) {
+    public R updateById(@RequestBody Student student) {
         boolean b = studentService.updateById(student);
-        return CommonResult.generateSuccessResult(1, b);
+        return new R(200, "修改成功", b);
     }
 
     /**
