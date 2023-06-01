@@ -45,3 +45,13 @@ export function delAllRecruitmentIpserver(arr) {
         data: arr
     });
 }
+
+export function addDelivery(recruitmentId, resumeId) {
+    return request({
+        method: "post",
+        url: "/delivery/add",
+        data: {
+            recruitmentId, resumeId
+        }
+    });
+}

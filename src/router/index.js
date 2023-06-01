@@ -59,6 +59,10 @@ const routes = [
                 path: 'recruitment',
                 component: () => import('@/components/system/Recruitment.vue'),
             },
+            {
+                path: 'resumefirm',
+                component: () => import('@/components/system/ResumeFirm.vue'),
+            },
         ]
     }
 ]

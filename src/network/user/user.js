@@ -60,3 +60,16 @@ export function updatePassword(oldPassword, newPassword) {
         }
     });
 }
+export function getOneStudent() {
+    return request({
+        method: "get",
+        url: "/student/getOne",
+    });
+}
+export function updateStudent(student) {
+    return request({
+        method: "post",
+        url: "/student/update",
+        data: student
+    });
+}

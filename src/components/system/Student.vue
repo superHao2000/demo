@@ -43,8 +43,7 @@
         </el-table-column>
         <el-table-column
             prop="birther"
-            label="出生日期"
-        >
+            label="出生日期">
         </el-table-column>
         <el-table-column
             prop="department"
@@ -171,7 +170,7 @@ export default {
       dialogVisible: false,
 
       form: {
-        userid: "",
+        sid: "",
         tid: "",
         sno: "",
         sname: "",
@@ -254,7 +253,7 @@ export default {
       this.dialogFormVisible = true
       // 数据回显
       console.log("row: ", row)
-      this.form.userid = row.userid
+      this.form.sid = row.sid
       this.form.tid = row.tid
       this.form.sno = row.sno
       this.form.sname = row.sname
@@ -300,7 +299,7 @@ export default {
     updateOk() {
       console.log("update info: ", this.form)
       updateStudentHandle(this.form).then(res => {
-        this.$message.success(res.msg)
+        this.$message.success("更新成功")
         this.fetchData()
         this.dialogFormVisible = false
       })

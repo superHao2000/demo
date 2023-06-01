@@ -8,7 +8,7 @@
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
           <el-submenu index="2">
             <template slot="title">{{ loginUser.userName }}</template>
-            <el-menu-item index="2-1">个人中心</el-menu-item>
+            <el-menu-item index="2-1" @click="updateInformation">个人中心</el-menu-item>
             <el-menu-item index="2-1" @click="updatePassword">密码修改</el-menu-item>
             <el-menu-item index="2-2" @click="logout">退出</el-menu-item>
           </el-submenu>
@@ -67,8 +67,10 @@
             <i class="el-icon-setting"></i>
             <span slot="title"><router-link to="/home/recruitment">招聘信息管理</router-link></span>
           </el-menu-item>
-
-
+          <el-menu-item index="6" v-if="(loginUser.type==3)">
+            <i class="el-icon-setting"></i>
+            <span slot="title"><router-link to="/home/resumefirm">投递管理</router-link></span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
@@ -91,6 +93,57 @@
             </div>
           </el-dialog>
         </div>
+        <div>
+          <el-dialog title="学生信息" :visible.sync="dialogFormVisible1">
+            <el-form :model="form" :rules="rules1">
+
+              <el-form-item label="学号" prop="sno">
+                <el-input v-model="form.sno" placeholder="请输入学号" clearable :style="{width: '100%'}"></el-input>
+              </el-form-item>
+              <el-form-item label="姓名" prop="sname">
+                <el-input v-model="form.sname" placeholder="请输入姓名" clearable :style="{width: '100%'}">
+                </el-input>
+              </el-form-item>
+              <el-form-item label="性别" prop="gender">
+                <el-radio-group v-model="form.gender" size="medium">
+                  <el-radio-button v-for="(item, index) in genderOptions" :key="index" :label="item.value"
+                                   :disabled="item.disabled">{{ item.label }}
+                  </el-radio-button>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item label="出生日期" prop="birther">
+                <el-date-picker v-model="form.birther" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+                                :style="{width: '100%'}" placeholder="请选择出生日期" clearable></el-date-picker>
+              </el-form-item>
+              <el-form-item label="院系" prop="department">
+                <el-input v-model="form.department" placeholder="请输入院系" clearable :style="{width: '100%'}">
+                </el-input>
+              </el-form-item>
+              <el-form-item label="专业" prop="major">
+                <el-input v-model="form.major" placeholder="请输入专业" clearable :style="{width: '100%'}">
+                </el-input>
+              </el-form-item>
+              <el-form-item label="学年" prop="grade">
+                <el-input v-model="form.grade" placeholder="请输入学年" clearable :style="{width: '100%'}">
+                </el-input>
+              </el-form-item>
+              <el-form-item label="联系电话" prop="phone">
+                <el-input v-model="form.phone" placeholder="请输入联系电话" clearable :style="{width: '100%'}">
+                </el-input>
+              </el-form-item>
+              <el-form-item label="联系地址" prop="address">
+                <el-input v-model="form.address" placeholder="请输入联系地址" clearable :style="{width: '100%'}">
+                </el-input>
+              </el-form-item>
+
+
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="updateOk">确 定</el-button>
+            </div>
+          </el-dialog>
+        </div>
         <router-view/>
       </el-main>
     </el-container>
@@ -100,7 +153,8 @@
 
 <script>
 
-import {updatePassword} from "@/network/user/user";
+import {getOneStudent, updatePassword} from "@/network/user/user";
+import {updateStudentHandle} from "@/network/user/student";
 
 export default {
   name: 'Home',
@@ -112,6 +166,19 @@ export default {
       formData: {
         oldPassword: undefined,
         newPassword: undefined,
+      },
+      form: {
+        sid: "",
+        tid: "",
+        sno: "",
+        sname: "",
+        gender: "",
+        birther: "",
+        department: "",
+        major: "",
+        grade: "",
+        phone: "",
+        address: "",
       },
       rules: {
         oldPassword: [{
@@ -125,11 +192,66 @@ export default {
           trigger: 'blur'
         }],
       },
+      rules1: {
+        sno: [{
+          required: true,
+          message: '请输入学号',
+          trigger: 'blur'
+        }],
+        sname: [{
+          required: true,
+          message: '请输入姓名',
+          trigger: 'blur'
+        }],
+        gender: [{
+          required: true,
+          message: '性别不能为空',
+          trigger: 'change'
+        }],
+        birther: [{
+          required: true,
+          message: '请选择出生日期',
+          trigger: 'change'
+        }],
+        department: [{
+          required: true,
+          message: '请输入院系',
+          trigger: 'blur'
+        }],
+        major: [{
+          required: true,
+          message: '请输入专业',
+          trigger: 'blur'
+        }],
+        grade: [{
+          required: true,
+          message: '请输入学年',
+          trigger: 'blur'
+        }],
+        phone: [{
+          required: true,
+          message: '请输入联系电话',
+          trigger: 'blur'
+        }],
+        address: [{
+          required: true,
+          message: '请输入联系地址',
+          trigger: 'blur'
+        }],
+      },
+      genderOptions: [{
+        "label": "男",
+        "value": 0
+      }, {
+        "label": "女",
+        "value": 1
+      }],
       loginUser: {
         userName: '',
       },
 
       dialogTableVisible: false,
+      dialogFormVisible1: false,
       dialogFormVisible: false,
 
       activeIndex: '1',
@@ -139,6 +261,32 @@ export default {
     logout() {
       window.localStorage.removeItem("data")
       this.$router.push("/login")
+    },
+    //学生修改自己个人信息
+    updateInformation() {
+      this.dialogFormVisible1 = true
+      getOneStudent().then(res => {
+            console.log(res)
+            this.form.sid = res.data.sid
+            this.form.tid = res.data.tid
+            this.form.sno = res.data.sno
+            this.form.sname = res.data.sname
+            this.form.gender = res.data.gender
+            this.form.birther = res.data.birther
+            this.form.department = res.data.department
+            this.form.major = res.data.major
+            this.form.grade = res.data.grade
+            this.form.phone = res.data.phone
+            this.form.address = res.data.address
+          }
+      )
+    },
+    updateOk() {
+      console.log("update info: ", this.form)
+      updateStudentHandle(this.form).then(res => {
+        this.$message.success(res.msg)
+        this.dialogFormVisible1 = false
+      })
     },
     updatePassword() {
       this.dialogFormVisible = true

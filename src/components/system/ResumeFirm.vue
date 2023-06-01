@@ -1,16 +1,14 @@
 <template>
   <div class="admin">
     <el-card>
-      <el-page-header @back="goBack" content="招聘信息管理"></el-page-header>
+      <el-page-header @back="goBack" content="投递简历管理"></el-page-header>
     </el-card>
     <el-card>
       <div class="condition">
         <el-input type="text" v-model="str" clearable @clear="fetchData" placeholder="请输入关键字"/>
         <el-button type="primary" class="search" @click="fetchData">搜索</el-button>
-        <el-button type="primary" @click="saveHandle" v-if="loginUser.type===3">添加招聘信息</el-button>
 
         <el-button
-            v-if="(loginUser.type!=1)"
             type="danger"
             icon="el-icon-delete"
             class="deleteLs"
@@ -40,127 +38,10 @@
         </el-table-column>
 
         <el-table-column
-            prop="recruitmentId"
+            prop="resumeId"
             label="ID"
             width="55">
         </el-table-column>
-        <el-table-column
-            prop="position"
-            label="招聘岗位">
-        </el-table-column>
-
-        <el-table-column
-            prop="num"
-            label="招聘人数"
-        >
-        </el-table-column>
-        <el-table-column
-            prop="location"
-            label="工作地点">
-        </el-table-column>
-        <el-table-column
-            prop="education"
-            label="学历要求">
-        </el-table-column>
-        <el-table-column
-            prop="major"
-            label="经验要求">
-        </el-table-column>
-        <el-table-column
-            prop="salary"
-            label="薪资">
-        </el-table-column>
-        <el-table-column
-            prop="createTime"
-            label="发布时间">
-        </el-table-column>
-        <el-table-column
-            prop="deliveryNum"
-            label="投递人数">
-        </el-table-column>
-
-        <el-table-column
-            prop="tel"
-            label="操作"
-            width="120px">
-          <template slot-scope="scope">
-            <div class="button">
-              <el-button v-if="(loginUser.type!=1)" type="primary" icon="el-icon-edit"
-                         @click="editHandle(scope.row)"></el-button>
-              <el-button v-if="(loginUser.type==0 || loginUser.type==3) " type="danger" icon="el-icon-delete"
-                         @click="deleteHandle(scope.row)"></el-button>
-              <el-button v-if="loginUser.type===1" type="primary" @click="deliver(scope.row)">
-                投递
-              </el-button>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <div class="block">
-        <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="pageNum"
-            :page-sizes="[5, 10, 30, 50]"
-            :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total">
-        </el-pagination>
-      </div>
-    </el-card>
-
-    <el-dialog @close="addDiaClose" title="招聘" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-
-        <el-form-item label="招聘岗位" prop="position">
-          <el-input v-model="form.position" placeholder="请输入招聘岗位" clearable :style="{width: '100%'}">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="招聘人数" prop="num">
-          <el-input v-model="form.num" placeholder="请输入招聘人数" clearable :style="{width: '100%'}">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="工作地点" prop="location">
-          <el-input v-model="form.location" placeholder="请输入工作地点" clearable :style="{width: '100%'}">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="学历要求" prop="education">
-          <el-input v-model="form.education" placeholder="请输入学历要求" clearable :style="{width: '100%'}">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="经验要求" prop="major">
-          <el-input v-model="form.major" placeholder="请输入经验要求" clearable :style="{width: '100%'}">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="薪资" prop="salary">
-          <el-input v-model="form.salary" placeholder="请输入薪资" clearable :style="{width: '100%'}">
-          </el-input>
-        </el-form-item>
-
-      </el-form>
-
-
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="updateOrAdd">确 定</el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog @close="addDiaClose" title="简历" :visible.sync="dialogFormVisible1">
-      <el-table
-          @selection-change="handleSelectionChange"
-          @row-click="handleRowClick"
-
-          ref="handSelectTest_multipleTable"
-          row-key="id"
-
-          :data="tableResumeData"
-          :header-cell-style="{'text-align':'center'}"
-          :cell-style="{'text-align':'center'}"
-          border
-          style="width: 100%">
-
         <el-table-column
             prop="name"
             label="名字">
@@ -210,24 +91,46 @@
             width="120px">
           <template slot-scope="scope">
             <div class="button">
-              <el-button type="info" icon="el-icon-message" circle @click="deliverinfo(scope.row)"></el-button>
+<!--              <el-button type="info" icon="el-icon-message" circle @click="editHandle(scope.row)"></el-button>-->
+              <el-button type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row)"></el-button>
             </div>
           </template>
         </el-table-column>
       </el-table>
+
+      <div class="block">
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="pageNum"
+            :page-sizes="[5, 10, 30, 50]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total">
+        </el-pagination>
+      </div>
+    </el-card>
+
+    <el-dialog @close="addDiaClose" title="简历" :visible.sync="dialogFormVisible">
+
+
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateOrAdd">确 定</el-button>
+      </div>
     </el-dialog>
+
   </div>
 </template>
 
 <script>
 import {
-  addDelivery,
-  AddRecruitmentHandle, delAllRecruitmentIpserver,
-  deleteRecruitmentHandle,
-  getAllRecruitmentHandle,
-  updateRecruitmentHandle
-} from "@/network/user/recruitment";
-import {getAllResumeHandle} from "@/network/user/resume";
+  AddResumeHandle, delAllResumeIpserver,
+  deleteResumeHandle,
+  getAllResumeHandle,
+  updateResumeHandle
+} from "@/network/user/resume";
 
 export default {
   name: `User`,
@@ -236,7 +139,6 @@ export default {
     this.loginUser = JSON.parse(localStorage.getItem("data"))
     // 数据初始化
     this.fetchData();
-    this.fetchResumeData();
   },
   data() {
     return {
@@ -250,72 +152,40 @@ export default {
       multipleSelection: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
-      dialogFormVisible1: false,
-      rules: {
-        position: [{
-          required: true,
-          message: '请输入招聘岗位',
-          trigger: 'blur'
-        }],
-        num: [{
-          required: true,
-          message: '请输入招聘人数',
-          trigger: 'blur'
-        }],
-        location: [{
-          required: true,
-          message: '请输入工作地点',
-          trigger: 'blur'
-        }],
-        education: [{
-          required: true,
-          message: '请输入学历要求',
-          trigger: 'blur'
-        }],
-        major: [{
-          required: true,
-          message: '请输入经验要求',
-          trigger: 'blur'
-        }],
-        salary: [{
-          required: true,
-          message: '请输入薪资',
-          trigger: 'blur'
-        }],
-      },
+
       str: '',
       pageSize: 10,
       total: 0,
       pageNum: 1,
       tableData: [],
-      tableResumeData: [],
       dialogVisible: false,
       //form表单
       form: {
-        recruitmentId: "",
-        eid: "",
-        position: "",
-        num: "",
-        location: "",
+        resumeId: "",
+        sid: "",
+        name: "",
+        gender: "",
+        birthdate: "",
+        tel: "",
         education: "",
+        school: "",
         major: "",
-        salary: "",
-        deliverNum: "",
-        createTime: ""
+        experience: "",
+        skill: "",
+        comment: "",
       },
       addOrUpdate: 0,
       formLabelWidth: '120px',
-      updateId: '',
-      ids: {
-        recid: '',
-        rmeid: '',
-      }
+      updateId: ''
     }
   },
   methods: {
     goBack() {
       console.log('go back');
       this.$router.push("/home")
+    },
+    formatSex(row) {
+      return row.gender == 0 ? "男" : row.gender == 1 ? "女" : "";
     },
     //判断修改还是添加
     updateOrAdd() {
@@ -329,7 +199,7 @@ export default {
     //添加操作
     addOK() {
       console.log(this.loginUser)
-      AddRecruitmentHandle(this.form).then(res => {
+      AddResumeHandle(this.form).then(res => {
         // this.fetchData()
         this.dialogFormVisible = false
       })
@@ -342,22 +212,24 @@ export default {
     //关闭添加界面
     addDiaClose() {
       this.form = {
-        recruitmentId: "",
-        eid: "",
-        position: "",
-        num: "",
-        location: "",
+        resumeId: "",
+        sid: "",
+        name: "",
+        gender: "",
+        birthdate: "",
+        tel: "",
         education: "",
+        school: "",
         major: "",
-        salary: "",
-        deliverNum: "",
-        createTime: ""
+        experience: "",
+        skill: "",
+        comment: "",
       }
     },
     // 修改操作
     updateOk() {
       console.log("update info: ", this.form)
-      updateRecruitmentHandle(this.form).then(res => {
+      updateResumeHandle(this.form).then(res => {
         // this.$message.success(res.message)
         this.fetchData()
         this.dialogFormVisible = false
@@ -367,35 +239,22 @@ export default {
     editHandle(row) {
       this.dialogFormVisible = true
       // 数据回显
-      this.form.recruitmentId = row.recruitmentId
-      this.form.eid = row.eid
-      this.form.position = row.position
-      this.form.num = row.num
-      this.form.location = row.location
+      this.form.resumeId = row.resumeId
+      this.form.sid = row.sid
+      this.form.name = row.name
+      this.form.gender = row.gender
+      this.form.birthdate = row.birthdate
+      this.form.tel = row.tel
       this.form.education = row.education
+      this.form.school = row.school
       this.form.major = row.major
-      this.form.salary = row.salary
-      this.form.deliverNum = row.deliverNum
+      this.form.experience = row.experience
+      this.form.skill = row.skill
+      this.form.comment = row.comment
 
       this.addOrUpdate = 0
     },
-    //查简历
-    deliver(row) {
-      this.dialogFormVisible1 = true
-      this.ids.recid = row.recruitmentId
-    },
-    deliverinfo(row) {
-      this.ids.rmeid = row.resumeId
-      console.log("对应的简历和招聘信息", this.ids)
-      addDelivery(this.ids.recid, this.ids.rmeid).then(res=>{
-        this.$message('投递成功');
-      })
-    },
-    fetchResumeData() {
-      getAllResumeHandle(this.loginUser.userId, this.loginUser.type, this.pageNum, this.pageSize, this.str).then(res => {
-        this.tableResumeData = res.data.records
-      })
-    },
+
     //删除操作
     deleteHandle(row) {
       this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
@@ -404,7 +263,7 @@ export default {
         type: 'warning'
       }).then(() => {
         console.log('deleteHandle: ', row.jid)
-        deleteRecruitmentHandle(row).then(res => {
+        deleteResumeHandle(row).then(res => {
           if (res.code == 200) {
             this.$message.success('删除成功');
           } else {
@@ -422,7 +281,7 @@ export default {
     },
     // 表格获取数据
     fetchData() {
-      getAllRecruitmentHandle(this.loginUser.userId, this.loginUser.type, this.pageNum, this.pageSize, this.str).then(res => {
+      getAllResumeHandle(this.loginUser.userId, this.loginUser.type, this.pageNum, this.pageSize, this.str).then(res => {
         this.pageSize = res.data.size
         this.pageNum = res.data.current
         this.total = res.data.total
@@ -433,7 +292,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       this.pageSize = val
-      getAllRecruitmentHandle(this.pageNum, this.pageSize, this.str).then(res => {
+      getAllResumeHandle(this.pageNum, this.pageSize, this.str).then(res => {
         console.log(res)
         this.tableData = res.data.records
       })
@@ -442,7 +301,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.pageNum = val
-      getAllRecruitmentHandle(this.pageNum, this.pageSize, this.str).then(res => {
+      getAllResumeHandle(this.pageNum, this.pageSize, this.str).then(res => {
         console.log(res)
         this.tableData = res.data.records
       })
@@ -470,7 +329,7 @@ export default {
         callback: action => {
           if (action === 'confirm') {
             //批量删除
-            delAllRecruitmentIpserver(arr).then(response => {
+            delAllResumeIpserver(arr).then(response => {
               this.$notify({
                 title: '删除成功',
                 message: '',
